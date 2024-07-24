@@ -4,26 +4,19 @@ from typing import List
 
 from bullet import Bullet, colors, utils
 
-
 class PurchaseItem(object):
     def __init__(self, option):
         self.price = option.p
         self.name = str(option)
 
-
 def get_total_order_amount(order: List[PurchaseItem]):
-
     """
     The total cost of all the items ordered
     """
-
-    raise NotImplementedError(
-        "REMOVE the error and RETURN the total amount for the order"
-    )
-
+    total = sum(item.price for item in order)
+    return total
 
 def get_service_charge(order: List[PurchaseItem]):
-
     """
     For every Rs. 100, the service charge amount should increase by 1% of order amount, upto a max of 20%
     Eg:
@@ -33,11 +26,10 @@ def get_service_charge(order: List[PurchaseItem]):
         Order Amount = 1500, Service Charge = 225
         Order Amount = 3000, Service Charge = 600
     """
-
-    raise NotImplementedError(
-        "REMOVE the error and RETURN service charge amount for the order"
-    )
-
+    total_amount = get_total_order_amount(order)
+    percentage = min(total_amount // 100, 20)
+    service_charge = total_amount * (percentage / 100)
+    return service_charge
 
 class Option(object):
     def __init__(self, n=None, pu=None, p=None, d=None):
@@ -59,7 +51,6 @@ class Option(object):
     def __len__(self):
         return len(self.__str__())
 
-
 MCDONALDS_FOOD_OPTIONS = [
     Option(d={"name": "Veg Burger", "price": 115.00}),
     Option(d={"name": "Veg Wrap", "price": 130.00}),
@@ -78,18 +69,14 @@ MCDONALDS_BEVERAGES_OPTIONS = [
     Option(d={"name": "No, that's all", "price": 0.00}),
 ]
 
-
 def get_option_from_result(result, options):
     for option in options:
         if str(option) == result:
             return option
-
     raise UnexpectedException
-
 
 def print_order(order):
     print()
-
     try:
         total_amount = get_total_order_amount(order)
     except:
@@ -129,7 +116,6 @@ def print_order(order):
         color=colors.foreground["green"],
         on=colors.background["yellow"],
     )
-
 
 print()
 utils.cprint(
